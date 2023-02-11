@@ -1,0 +1,27 @@
+{
+  "name": "typescript-observables",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nataliebasille/typescript-observables.git"
+  },
+  "author": "Natalie Basille",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nataliebasille/typescript-observables/issues"
+  },
+  "homepage": "https://github.com/nataliebasille/typescript-observables#readme",
+  "devDependencies": {
+    "@sinonjs/fake-timers": "^10.0.2",
+    "@types/jest": "^29.4.0",
+    "@types/sinonjs__fake-timers": "^8.1.2",
+    "jest": "^29.4.1",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1"
+  }
+}
