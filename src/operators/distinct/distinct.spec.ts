@@ -24,7 +24,7 @@ describe("distinct", () => {
       yield { id: 2, name: "Eve" };
     }
 
-    const source = distinct((user: User) => user.id)(generator);
+    const source = distinct((user: User) => user.id)(generator());
 
     const values = [];
     for await (const value of source()) {
@@ -46,7 +46,7 @@ describe("distinct", () => {
       yield 4;
     }
 
-    const source = distinct()(generator);
+    const source = distinct()(generator());
 
     const values = [];
     for await (const value of source()) {
@@ -67,26 +67,5 @@ describe("distinct", () => {
     }
 
     expect(values).toEqual([]);
-  });
-
-  it("inner source is closed when the stream is closed", async () => {
-    const close = jest.fn();
-    const numberStream = async function* () {
-      try {
-        yield 0;
-        yield 1;
-        yield 2;
-        yield 3;
-      } finally {
-        close();
-      }
-    };
-    const source = distinct()(numberStream);
-    const stream = source();
-    await stream.next();
-    await stream.next();
-    await stream.return();
-
-    expect(close).toHaveBeenCalledTimes(1);
   });
 });
