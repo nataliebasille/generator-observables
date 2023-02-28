@@ -1,4 +1,4 @@
-import { Operator } from "../operate";
+import { Operator } from "../operator";
 
 export const filter = <T>(predicate: (value: T) => boolean): Operator<T, T> => {
   return (stream) => {

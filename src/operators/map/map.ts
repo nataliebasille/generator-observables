@@ -1,5 +1,5 @@
 import { Stream } from "../../streams/stream";
-import { Operator } from "../operate";
+import { Operator } from "../operator";
 
 export const map = <TIn, TOut>(
   fn: (value: TIn, index: number) => TOut
