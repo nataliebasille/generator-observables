@@ -1,16 +1,12 @@
+import { pipe } from "../../pipe/pipe";
 import { empty, from } from "../../streams";
+import { collect } from "../../terminators";
 import { distinct } from "./distinct";
 
 describe("distinct", () => {
   it("should yield distinct values from an input generator with default comparison function", async () => {
     const numberStream = from([1, 2, 3, 1, 2, 3, 1, 2, 3]);
-    const source = distinct()(numberStream);
-
-    const values = [];
-    for await (const value of source()) {
-      values.push(value);
-    }
-
+    const values = await pipe(numberStream, distinct(), collect);
     expect(values).toEqual([1, 2, 3]);
   });
 
@@ -24,12 +20,11 @@ describe("distinct", () => {
       yield { id: 2, name: "Eve" };
     }
 
-    const source = distinct((user: User) => user.id)(generator());
-
-    const values = [];
-    for await (const value of source()) {
-      values.push(value);
-    }
+    const values = await pipe(
+      generator(),
+      distinct((user: User) => user.id),
+      collect
+    );
 
     expect(values).toEqual([
       { id: 1, name: "Alice" },
@@ -46,12 +41,7 @@ describe("distinct", () => {
       yield 4;
     }
 
-    const source = distinct()(generator());
-
-    const values = [];
-    for await (const value of source()) {
-      values.push(value);
-    }
+    const values = await pipe(generator(), distinct(), collect);
 
     expect(values).toEqual([1, 2, 3, 4]);
   });
@@ -59,13 +49,7 @@ describe("distinct", () => {
   it("should handle an empty input generator", async () => {
     const emptyStream = empty();
 
-    const source = distinct()(emptyStream);
-
-    const values = [];
-    for await (const value of source()) {
-      values.push(value);
-    }
-
+    const values = await pipe(emptyStream, distinct(), collect);
     expect(values).toEqual([]);
   });
 });

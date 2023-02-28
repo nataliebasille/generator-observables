@@ -1,6 +1,7 @@
 import { debounce } from "./debounce";
 import fakeTimers from "@sinonjs/fake-timers";
 import { subscribe } from "../../subscribe";
+import { pipe } from "../../pipe/pipe";
 
 describe("debounce", () => {
   let clock: ReturnType<typeof fakeTimers.install>;
@@ -22,7 +23,7 @@ describe("debounce", () => {
       yield 3;
     }
 
-    const debounceSource = debounce(200)(inputGenerator());
+    const debounceSource = pipe(inputGenerator(), debounce(200));
 
     const values: number[] = [];
 
