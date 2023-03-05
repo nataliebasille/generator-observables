@@ -1,5 +1,5 @@
 {
-  "name": "typescript-observables",
+  "name": "@nataliebasille/generators",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nataliebasille/typescript-observables.git"
+    "url": "git+https://github.com/nataliebasille/generators.git"
   },
   "author": "Natalie Basille",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nataliebasille/typescript-observables/issues"
+    "url": "https://github.com/nataliebasille/generators/issues"
   },
-  "homepage": "https://github.com/nataliebasille/typescript-observables#readme",
+  "homepage": "https://github.com/nataliebasille/generators#readme",
   "devDependencies": {
     "@sinonjs/fake-timers": "^10.0.2",
     "@types/jest": "^29.4.0",
