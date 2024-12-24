@@ -1,34 +1,52 @@
-import type { Stream } from "./streams";
+import type { Stream } from './streams';
 
-export type Subscriber<T> = () => Generator<void, void, T>;
+export type Observer<T> = Generator<void, void, T>;
+export type ObserverFactory<T> = () => Observer<T>;
 
-export const subscribe = <T>(
-  source: () => Stream<T>,
-  subscriber: Subscriber<T>
-) => {
-  const streamGenerator = source();
-  const subscriberGenerator = subscriber();
+export function subscribe<T>(source: Stream<T>) {
+  return (observerFactory: ObserverFactory<T>) => {
+    const stream = source();
+    const observer = subscribeableObserver(observerFactory);
 
-  const unsubscribe = () => {
-    streamGenerator.return();
-    subscriberGenerator.return();
-  };
+    const unsubscribe = async () => {
+      observer.return();
+      stream.return();
+    };
 
-  subscriberGenerator.next();
+    observer.next();
 
-  (async () => {
-    try {
-      for await (const value of streamGenerator) {
-        const { done } = subscriberGenerator.next(value);
+    (async () => {
+      try {
+        for await (const value of stream) {
+          const { done } = observer.next(value);
 
-        if (done) {
-          break;
+          if (done) {
+            break;
+          }
         }
+      } finally {
+        unsubscribe();
       }
-    } finally {
-      unsubscribe();
-    }
-  })();
+    })();
 
-  return unsubscribe;
-};
+    return unsubscribe;
+  };
+}
+
+function* subscribeableObserver<T>(factory: ObserverFactory<T>) {
+  let observer: Observer<T> = factory();
+  let value: IteratorResult<void, void> = observer.next();
+
+  try {
+    do {
+      if (!value || value.done) {
+        observer = factory();
+        value = observer.next();
+      }
+
+      value = observer.next(yield);
+    } while (true);
+  } finally {
+    observer.return();
+  }
+}

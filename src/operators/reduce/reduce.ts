@@ -1,5 +1,5 @@
-import { Stream } from "../../streams";
-import { Operator } from "../operator";
+import { Stream } from '../../streams';
+import { Operator } from '../operator';
 
 export function reduce<T>(
   reducer: (accumulator: T, value: T, index: number) => T
@@ -15,10 +15,10 @@ export function reduce<T, A>(
 ) {
   const hasInitialValue = arguments.length !== 1;
   return (stream: Stream<T>) => {
-    return (async function* () {
+    return async function* () {
       let index = 0;
       let accumulator: A = initialValue as A;
-      for await (const value of stream) {
+      for await (const value of stream()) {
         if (!hasInitialValue && index === 0) {
           accumulator = value as unknown as A;
         } else {
@@ -31,6 +31,6 @@ export function reduce<T, A>(
       if (index === 0 && hasInitialValue) {
         yield initialValue;
       }
-    })();
+    };
   };
 }

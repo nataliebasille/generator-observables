@@ -1,3 +1,3 @@
-import { Stream } from "../streams/stream";
+import { Stream } from '../streams';
 
 export type Operator<TIn, TOut> = (stream: Stream<TIn>) => Stream<TOut>;

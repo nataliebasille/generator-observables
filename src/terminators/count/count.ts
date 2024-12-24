@@ -1,8 +1,8 @@
-import { Stream } from "../../streams";
-import { reduce } from "../../operators/reduce/reduce";
-import { last } from "../last/last";
+import { Stream } from '../../streams';
+import { reduce } from '../../operators/reduce/reduce';
+import { last } from '../last/last';
 
-export const count = <T>(predicate?: (value: T) => boolean) => {
+export function count<T>(predicate?: (value: T) => boolean) {
   return async (stream: Stream<T>) => {
     const value = await last<number>()(
       reduce<T, number>((count, item) => {
@@ -15,4 +15,4 @@ export const count = <T>(predicate?: (value: T) => boolean) => {
 
     return value ?? 0;
   };
-};
+}

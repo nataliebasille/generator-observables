@@ -1,11 +1,20 @@
-import { Stream } from "../stream";
+export function interval(every: number) {
+  return async function* () {
+    let i = 0;
+    let timer;
 
-export async function* interval(every: number): Stream<number> {
-  let i = 0;
-  while (true) {
-    await new Promise((resolve) => {
-      setTimeout(resolve, every);
-    });
-    yield i++;
-  }
+    try {
+      while (true) {
+        yield await new Promise<number>((resolve) => {
+          timer = setTimeout(() => {
+            resolve(i++);
+          }, every);
+        });
+      }
+    } finally {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    }
+  };
 }

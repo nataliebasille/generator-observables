@@ -1,4 +1,4 @@
-import { Stream } from "../stream";
+import { Stream } from '../stream';
 
 export function zip<S1, S2>(s1: Stream<S1>, s2: Stream<S2>): Stream<[S1, S2]>;
 export function zip<S1, S2, S3>(
@@ -98,13 +98,14 @@ export function zip<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>(
 ): Stream<[S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12]>;
 
 export function zip(...streams: Stream<unknown>[]): Stream<unknown[]> {
-  return (async function* () {
+  return async function* () {
+    const iterators = streams.map((s) => s());
     while (true) {
-      const results = await Promise.all(streams.map((i) => i.next()));
+      const results = await Promise.all(iterators.map((i) => i.next()));
       if (results.some((r) => r.done)) {
         break;
       }
       yield results.map((r) => r.value);
     }
-  })();
+  };
 }

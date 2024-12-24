@@ -1,1 +1,1 @@
-export type Stream<T> = AsyncGenerator<T, void, void | unknown>;
+export type Stream<T> = () => Generator<T, void> | AsyncGenerator<T, void>;
