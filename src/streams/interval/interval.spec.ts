@@ -1,6 +1,7 @@
 import fakeTimers from '@sinonjs/fake-timers';
 import { interval } from './interval';
 import { subscribe } from '../../subscribe';
+import { Stream } from '../stream';
 
 describe('interval', () => {
   let clock: ReturnType<typeof fakeTimers.install>;
@@ -53,5 +54,13 @@ describe('interval', () => {
     unsubscribe();
 
     expect(generator.next()).resolves.toEqual({ done: true, value: undefined });
+  });
+
+  it('should be able to complete when calling return on generator', async () => {
+    const stream = interval(100);
+    const generator = stream();
+
+    generator?.next();
+    await generator?.return(undefined);
   });
 });
