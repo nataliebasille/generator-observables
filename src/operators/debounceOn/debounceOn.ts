@@ -8,7 +8,9 @@ export function debounceOn(debounceStream: Stream<unknown>) {
     return async function* () {
       let currentValue: T | typeof NO_VALUE = NO_VALUE;
       const unsubscribe = subscribe(stream)(function* () {
-        currentValue = yield;
+        while (true) {
+          currentValue = yield;
+        }
       });
 
       try {

@@ -34,14 +34,13 @@ export function subscribe<T>(source: Stream<T>) {
 }
 
 function* subscribeableObserver<T>(factory: ObserverFactory<T>) {
-  let observer: Observer<T> = factory();
+  const observer: Observer<T> = factory();
   let value: IteratorResult<void, void> = observer.next();
 
   try {
     do {
-      if (!value || value.done) {
-        observer = factory();
-        value = observer.next();
+      if (value.done) {
+        break;
       }
 
       value = observer.next(yield);

@@ -1,7 +1,6 @@
 import fakeTimers from '@sinonjs/fake-timers';
 import { interval } from './interval';
 import { subscribe } from '../../subscribe';
-import { Stream } from '../stream';
 
 describe('interval', () => {
   let clock: ReturnType<typeof fakeTimers.install>;
@@ -19,7 +18,9 @@ describe('interval', () => {
     const values: number[] = [];
 
     subscribe(stream)(function* () {
-      values.push(yield);
+      while (true) {
+        values.push(yield);
+      }
     });
 
     await clock.tickAsync(1000);
@@ -32,7 +33,9 @@ describe('interval', () => {
     const values: number[] = [];
 
     const unsubscribe = subscribe(stream)(function* () {
-      values.push(yield);
+      while (true) {
+        values.push(yield);
+      }
     });
 
     await clock.tickAsync(1000);

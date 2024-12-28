@@ -29,7 +29,9 @@ describe('debounce', () => {
     const values: number[] = [];
 
     const unsubscribe = subscribe(debounceSource)(function* () {
-      values.push(yield);
+      while (true) {
+        values.push(yield);
+      }
     });
 
     expect(values).toEqual([]);
